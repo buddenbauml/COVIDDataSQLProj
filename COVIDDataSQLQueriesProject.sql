@@ -3,22 +3,13 @@ FROM PortfolioProject..CovidDeaths
 Where continent is not null
 order by 3,4
 
---SELECT *
---FROM PortfolioProject..CovidVaccinations
---order by 3,4
-
--- Select Data that we are going to be using 
---Select Location, date, total_cases, new_cases, total_deaths, population
---From PortfolioProject..CovidDeaths
---order by 1,2
-
 
 -- Looking at total cases vs. total deaths
 
---Select Location, date, total_cases, total_deaths, (CONVERT(float,total_deaths)/NULLIF(CONVERT(float,total_cases),0))*100 as DeathPercentage
---From PortfolioProject..CovidDeaths
---Where location like '%states%'
---order by 1,2
+Select Location, date, total_cases, total_deaths, (CONVERT(float,total_deaths)/NULLIF(CONVERT(float,total_cases),0))*100 as DeathPercentage
+From PortfolioProject..CovidDeaths
+Where location like '%states%'
+order by 1,2
 
 --Looking at Total cases vs Population
 
@@ -85,7 +76,7 @@ where dea.continent is not null
 Select *, (RollingPeopleVaccinated/population)*100
 From PopvsVAC
 
--- Temp Table
+-- Create a Temp Table
 Drop Table if exists #PercentPopulationVaccinated
 Create Table #PercentPopulationVaccinated
 (
@@ -111,18 +102,7 @@ Select *, (RollingPeopleVaccinated/population)*100
 From #PercentPopulationVaccinated
 
 
-
---Create View PercentPopulationVaccinatedTwo as 
---Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
---, SUM(CONVERT(bigint,vac.new_vaccinations)) OVER (Partition by dea.Location Order by dea.location, dea.date) as RollingPeoplevaccinated
---From PortfolioProject..CovidDeaths dea
---Join PortfolioProject..CovidVaccinations vac
---	On dea.location = vac.location
---	and dea.date = vac.date
---where dea.continent is not null
-----order by 2,3
-
-
+--Creates a view for use in Tableau Visualization
 
 DROP VIEW IF EXISTS PercentPopulationVaccinated
 GO
